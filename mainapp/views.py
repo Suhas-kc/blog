@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
 from django.views import View
-from .forms import userForm,loginForm
-from .models import User
+from .forms import userForm,loginForm,submitBlogForm
+from .models import User,BlogPost,CommentPost
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse,HttpResponseRedirect
 from django.core.urlresolvers import reverse
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
@@ -63,6 +63,30 @@ class homeView(View):
     templateName = 'mainapp/home.html'
     def get(self,request):
         return render(request,self.templateName)
+
+class submitBlogView(LoginRequiredMixin,View):
+    templateName = 'mainapp/blog.html'
+    login_url = 'mainapp:login'
+    def get(self,request):
+        blogDetails = submitBlogForm()
+        return render(request,self.templateName,{'blogDetails':blogDetails})
+    def post(self,request):
+        blogDetails = submitBlogForm(request.POST)
+        if blogDetails.is_valid():
+            post = blogDetails.save(commit=False)
+            post.author = request.user
+            post.save()
+            blogDetails.save_m2m()
+            return HttpResponseRedirect(reverse('mainapp:blog',kwargs={'num':int(post.id)}))
+        else:
+            return render(request,self.templateName,{'blogDetails':blogDetails})
+
+
+class blogView(View):
+    templateName = 'mainapp/blogView.html'
+    def get(self,request,num):
+        post = get_object_or_404(BlogPost,pk=num)
+        return render(request,self.templateName,{'post':post})
 
 def logoutView(request):
     logout(request)
