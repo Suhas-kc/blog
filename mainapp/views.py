@@ -59,5 +59,15 @@ class loginView(View):
         else:
             return render(request, self.templateName, {'loginDetails' : loginDetails})
 
+class homeView(View):
+    templateName = 'mainapp/home.html'
+    def get(self,request):
+        return render(request,self.templateName)
+
+def logoutView(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('mainapp:login'))
+
+
 def success(request):
     return HttpResponse('Success!')
