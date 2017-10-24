@@ -5,7 +5,7 @@ from taggit.managers import TaggableManager
 # Create your models here.
 
 class Post(models.Model):
-    time = models.DateTimeField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True)
     content = models.TextField()
     author = models.ForeignKey(User,on_delete=models.CASCADE)
 
