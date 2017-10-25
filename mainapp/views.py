@@ -62,7 +62,9 @@ class loginView(View):
 class homeView(View):
     templateName = 'mainapp/home.html'
     def get(self,request):
-        return render(request,self.templateName)
+        postObjects = BlogPost.objects.all()
+
+        return render(request,self.templateName,{'postObjects':postObjects})
 
 class submitBlogView(LoginRequiredMixin,View):
     templateName = 'mainapp/blog.html'

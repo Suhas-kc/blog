@@ -11,5 +11,10 @@
 <div>
     <a href="{% url 'mainapp:login' %}">Login Now</a>
 </div>
+{% for post in postObjects %}
+<div>
+    <a href="{% url 'mainapp:blog' post.id %}">{{ post.title }}</a>
+</div>
+{% endfor %}
 </body>
 </html>
