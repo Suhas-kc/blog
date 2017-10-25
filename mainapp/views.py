@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404
 from django.views import View
-from .forms import userForm,loginForm,submitBlogForm
+from .forms import userForm,loginForm,submitBlogForm,submitCommentForm
 from .models import User,BlogPost,CommentPost
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse,HttpResponseRedirect
@@ -84,11 +84,29 @@ class submitBlogView(LoginRequiredMixin,View):
             return render(request,self.templateName,{'blogDetails':blogDetails})
 
 
-class blogView(View):
+class blogView(LoginRequiredMixin,View):
     templateName = 'mainapp/blogView.html'
+    login_url = 'mainapp:login'
     def get(self,request,num):
         post = get_object_or_404(BlogPost,pk=num)
-        return render(request,self.templateName,{'post':post})
+        comments = CommentPost.objects.filter(postId=int(num))
+        commentDetails = submitCommentForm()
+        return render(request,self.templateName,{'post':post,'commentDetails':commentDetails,
+                                                 'comments':comments})
+    def post(self,request,num):
+        commentDetails = submitCommentForm(request.POST)
+        postId = get_object_or_404(BlogPost, pk=num)
+        comments = CommentPost.objects.filter(postId=int(num))
+        if commentDetails.is_valid():
+            comment = commentDetails.save(commit=False)
+            comment.postId = postId
+            comment.author = request.user
+            comment.save()
+            return HttpResponseRedirect(reverse('mainapp:blog',kwargs={'num':int(num)}))
+        else:
+            return render(request,self.templateName,{'post':postId,
+                                                     'commentDetails':commentDetails,
+                                                     'comments': comments})
 
 def logoutView(request):
     logout(request)

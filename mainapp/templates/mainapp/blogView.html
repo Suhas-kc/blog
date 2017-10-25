@@ -13,5 +13,19 @@
 <p>
     On {{ post.time }}
 </p>
+<form method="post" action="{% url 'mainapp:blog' post.id %}">
+    {% csrf_token %}
+    {{ commentDetails }}
+    <input type="submit" value="submit">
+</form>
+
+<div>
+    {% for comment in comments %}
+    <h3>By {{ comment.author.username }}</h3>
+    <p>
+        {{ comment.content }}
+    </p>
+    {% endfor %}
+</div>
 </body>
 </html>
