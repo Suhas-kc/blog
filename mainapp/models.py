@@ -1,14 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
-from datetime import date
 
 # Create your models here.
 
 class Post(models.Model):
     content = models.TextField()
     author = models.ForeignKey(User,on_delete=models.CASCADE)
-
+    time = models.DateTimeField(auto_now_add=True)
     class Meta:
         abstract = True
 
