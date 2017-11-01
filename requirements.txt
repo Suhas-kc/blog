@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 dj-database-url==0.4.1
 Django==1.11.1
 django-taggit==0.22.1
@@ -6,3 +7,9 @@ mysqlclient==1.3.12
 psycopg2==2.6.2
 pytz==2017.2
 whitenoise==3.2
+=======
+Django==1.11.6
+django-taggit==0.22.1
+mysqlclient==1.3.12
+pytz==2017.2
+>>>>>>> 6be0c8063831e0c0ee94f928b5e137c4bfca74b4
