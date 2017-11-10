@@ -1,14 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Title</title>
+    <STYLE>
+        body{
+            font-family: 'Roboto', sans-serif;
+
+        }
+
+        .login{
+            position: relative;
+            top: 12em;
+            font-size: 20px;
+        }
+
+        .header{
+            position: relative;
+            top: 2em;
+            font-weight: 300;
+            font-size: 8em;
+        }
+        .register{
+            margin-top: 1em;
+        }
+    </STYLE>
 </head>
 <body>
-<form method="post" action="{% url 'mainapp:login' %}">
-    {% csrf_token %}
-    {{ loginDetails }}
-    <input type="submit" value="Submit">
-</form>
+<div class="container-fluid">
+     <div class="header text-center">
+                <p>
+                    Blog
+                </p>
+            </div>
+    <div class="row">
+        <div class="login text-center col-md-6 col-md-offset-3 ">
+
+            <form method="post" action="{% url 'mainapp:login' %}">
+                {% csrf_token %}
+                <table>
+                    {{ loginDetails.as_p }}
+                </table>
+                <input type="submit" value="Submit">
+            </form>
+            <div class="register">
+                New user? Click <a href="{% url 'mainapp:signup' %}">here</a> to register.
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 </html>

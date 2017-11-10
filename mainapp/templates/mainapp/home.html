@@ -1,20 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:100,300,400" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
+<style>
+    body{
+        font-family: 'Roboto',sans-serif;
+    }
+
+    .posts{
+        position: relative;
+        left: 2em;
+    }
+
+    .one-post{
+        color: grey;
+        font-size: 4em;
+        height: 3em;
+        width: 7em;
+        margin-top: 1em;
+        border-style: solid;
+        border-width: 2px;
+        border-radius: 15px;
+    }
+
+    .navbar{
+        font-weight: 400;
+    }
+</style>
 <body>
-<div>
-    <a href="{% url 'mainapp:signup' %}">Signup Now</a>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Blog</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="{% url 'mainapp:submit' %}">Submit post</a></li>
+
+
+    </ul>
+      <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'mainapp:logout' %}">Log out  <span class="glyphicon glyphicon-log-out"></span></a></li>
+      </ul>
+  </div>
+</nav>
+<div class="container-fluid">
+    <div class="header">
+        <h1>
+            Front Page:
+        </h1>
+    </div>
+
+    <div class="posts">
+        {% for post in postObjects %}
+         <a href="{% url 'mainapp:blog' post.id %}">
+        <div class="one-post">
+           {{ post.title }}
+        </div>
+         </a>
+        {% endfor %}
+    </div>
 </div>
-<div>
-    <a href="{% url 'mainapp:login' %}">Login Now</a>
-</div>
-{% for post in postObjects %}
-<div>
-    <a href="{% url 'mainapp:blog' post.id %}">{{ post.title }}</a>
-</div>
-{% endfor %}
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 </body>
 </html>

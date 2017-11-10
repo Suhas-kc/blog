@@ -51,7 +51,7 @@ class loginView(View):
             user = authenticate(request,username=username,password=password)
             if user is not None:
                 login(request,user)
-                return HttpResponseRedirect(reverse('mainapp:success'))
+                return HttpResponseRedirect(reverse('mainapp:home'))
             else:
                 loginDetails.add_error(None,'Username and password doesn\'t match')
                 return render(request, self.templateName, {'loginDetails' : loginDetails})
@@ -59,8 +59,9 @@ class loginView(View):
         else:
             return render(request, self.templateName, {'loginDetails' : loginDetails})
 
-class homeView(View):
+class homeView(LoginRequiredMixin,View):
     templateName = 'mainapp/home.html'
+    login_url = 'mainapp:login'
     def get(self,request):
         postObjects = BlogPost.objects.all()
 

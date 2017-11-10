@@ -42,3 +42,6 @@ class submitCommentForm(forms.ModelForm):
     class Meta:
         model = CommentPost
         fields = ['content']
+        labels = {
+            'content' : 'Reply',
+        }

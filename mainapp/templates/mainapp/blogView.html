@@ -1,25 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto:100,300,400" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
-<h1>{{ post.title }}</h1>
-<h2>By {{ post.author.username }}</h2>
-<p>
-    {{ post.content }}
-</p>
-<p>
-    On {{ post.time }}
-</p>
-<form method="post" action="{% url 'mainapp:blog' post.id %}">
-    {% csrf_token %}
-    {{ commentDetails }}
-    <input type="submit" value="submit">
-</form>
+<style>
+    body{
+        font-family: 'Roboto',sans-serif;
+    }
 
-<div>
+    .main-body{
+        position: relative;
+        top: 4em;
+    }
+
+    .comment{
+        position: relative;
+        top: 5em;
+        left: 5em;
+    }
+
+    .compost{
+        position: relative;
+        top: 8em;
+    }
+
+    h1{
+        font-size: 4em;
+        font-weight: 400;
+    }
+    h2{
+
+        font-size: 1.2em;
+    }
+    h3{
+
+        font-size: 1.2em;
+    }
+    p{
+        font-size: 2em;
+        font-family: 'Open Sans',sans-serif;
+    }
+
+    #coms{
+        font-size: 3em;
+    }
+</style>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Blog</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li ><a href="{% url 'mainapp:home' %}">Home</a></li>
+      <li><a href="{% url 'mainapp:submit' %}">Submit post</a></li>
+
+
+    </ul>
+      <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'mainapp:logout' %}">Log out  <span class="glyphicon glyphicon-log-out"></span></a></li>
+      </ul>
+  </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <div class="main-body  col-md-3 col-md-offset-1">
+            <h1 class="text-center">{{ post.title }}</h1>
+            <h2>By {{ post.author.username }}</h2>
+            <h3>
+            On {{ post.time }}
+            </h3>
+            <p>
+            {{ post.content }}
+            </p>
+        </div>
+    </div>
+    <div class="comment">
+        <form method="post" action="{% url 'mainapp:blog' post.id %}">
+            {% csrf_token %}
+            {{ commentDetails }}
+            <input type="submit" value="submit">
+        </form>
+    </div>
+    <div class="compost">
+        <h1 id="coms">Comments:</h1>
     {% for comment in comments %}
     <h3>By {{ comment.author.username }}</h3>
     <p>
@@ -27,5 +94,13 @@
     </p>
     {% endfor %}
 </div>
+</div>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>
 </html>
