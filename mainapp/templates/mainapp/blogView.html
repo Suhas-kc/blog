@@ -19,7 +19,7 @@
     .comment{
         position: relative;
         top: 5em;
-        left: 5em;
+        left: 8em;
     }
 
     .compost{
@@ -28,8 +28,10 @@
     }
 
     h1{
+        background-color: black;
+        color: white;
         font-size: 4em;
-        font-weight: 400;
+        font-weight: 100;
     }
     h2{
 
@@ -40,6 +42,7 @@
         font-size: 1.2em;
     }
     p{
+        text-align: justify;
         font-size: 2em;
         font-family: 'Open Sans',sans-serif;
     }
@@ -49,7 +52,7 @@
     }
 </style>
 <body>
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">Blog</a>
@@ -73,9 +76,14 @@
             <h3>
             On {{ post.time }}
             </h3>
+            Tags:
+            {% for tag in post.tags.slugs %}
+                {{ tag }}
+            {% endfor %}
             <p>
             {{ post.content }}
             </p>
+
         </div>
     </div>
     <div class="comment">

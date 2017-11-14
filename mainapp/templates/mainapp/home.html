@@ -16,8 +16,14 @@
         left: 2em;
     }
 
+    .header{
+
+
+    }
     .one-post{
-        color: grey;
+        background-color: black;
+        color: white;
+        font-weight: 100;
         font-size: 4em;
         height: 3em;
         width: 7em;
@@ -25,6 +31,14 @@
         border-style: solid;
         border-width: 2px;
         border-radius: 15px;
+        border-color: black;
+        transition: background-color 0.6s;
+        transition: color 0.6s;
+    }
+
+    .one-post:hover{
+        background-color: white;
+        color: black;
     }
 
     .navbar{
@@ -32,10 +46,10 @@
     }
 </style>
 <body>
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Blog</a>
+      <a class="navbar-brand" href="#">Blogr</a>
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="#">Home</a></li>
