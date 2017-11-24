@@ -1,5 +1,5 @@
 from django import forms
-from .models import User,BlogPost,CommentPost
+from .models import User,BlogPost,CommentPost,Tag
 
 class userForm(forms.ModelForm):
     """
@@ -34,6 +34,7 @@ class loginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput,required=True)
 
 class submitBlogForm(forms.ModelForm):
+    tags = forms.ModelChoiceField(Tag.objects.all(),required=True)
     class Meta:
         model = BlogPost
         fields = ['title','content','tags']

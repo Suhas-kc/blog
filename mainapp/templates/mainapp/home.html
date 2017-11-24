@@ -54,6 +54,11 @@
     <ul class="nav navbar-nav">
       <li class="active"><a href="#">Home</a></li>
       <li><a href="{% url 'mainapp:submit' %}">Submit post</a></li>
+        <li><a href="{% url 'mainapp:home' %}?q=engineering">Engineering</a></li>
+        <li><a href="{% url 'mainapp:home' %}?q=medical">Medical</a></li>
+        <li><a href="{% url 'mainapp:home' %}?q=law">Law</a></li>
+        <li><a href="{% url 'mainapp:home' %}?q=management">Management</a></li>
+        <li><a href="{% url 'mainapp:home' %}?q=commerce">Commerce</a></li>
 
 
     </ul>
@@ -63,6 +68,18 @@
   </div>
 </nav>
 <div class="container-fluid">
+    <div class="notifications">
+        <h1>
+            Notifications:
+        </h1>
+
+            {% for cp in notifObjects %}
+        <p>
+                {{ cp.author }} commented on {{ cp.postId.title }}
+        </p>
+            {% endfor %}
+
+    </div>
     <div class="header">
         <h1>
             Front Page:

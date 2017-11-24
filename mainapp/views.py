@@ -1,11 +1,12 @@
 from django.shortcuts import render,get_object_or_404
 from django.views import View
 from .forms import userForm,loginForm,submitBlogForm,submitCommentForm
-from .models import User,BlogPost,CommentPost
+from .models import User,BlogPost,CommentPost,Tag
 from django.contrib.auth import authenticate, login,logout
 from django.http import HttpResponse,HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import connection
 
 
 # Create your views here.
@@ -23,14 +24,11 @@ class signupView(View):
 
     def post(self, request):                               #POST repsonse for signup url
         userDetails = userForm(request.POST)
-
-
         if userDetails.is_valid():
             u = userDetails.save(commit=False)
             user = User.objects.create_user(u.username,u.email,u.password,first_name=u.first_name,last_name=u.last_name)
             user.save()
             return HttpResponseRedirect(reverse('mainapp:login'))
-
         else:
             return render(request,self.templateName,{'userDetails':userDetails})
 
@@ -64,8 +62,16 @@ class homeView(LoginRequiredMixin,View):
     login_url = 'mainapp:login'
     def get(self,request):
         postObjects = BlogPost.objects.all()
+        if request.GET.get('q',None):
+            postObjects = postObjects.filter(tags=Tag.objects.get(name=request.GET['q']))
+        cur = connection.cursor()
+        cur.callproc('getnotification',[request.user.id])
+        results = cur.fetchall()
+        cur.close()
+        notifObjects = [CommentPost.objects.get(id=x[0]) for x in results]
 
-        return render(request,self.templateName,{'postObjects':postObjects})
+
+        return render(request,self.templateName,{'postObjects':postObjects,'notifObjects':notifObjects})
 
 class submitBlogView(LoginRequiredMixin,View):
     templateName = 'mainapp/blog.html'
@@ -79,7 +85,8 @@ class submitBlogView(LoginRequiredMixin,View):
             post = blogDetails.save(commit=False)
             post.author = request.user
             post.save()
-            blogDetails.save_m2m()
+            post.tags.set(blogDetails.cleaned_data['tags'])
+            #blogDetails.save_m2m()
             return HttpResponseRedirect(reverse('mainapp:blog',kwargs={'num':int(post.id)}))
         else:
             return render(request,self.templateName,{'blogDetails':blogDetails})
@@ -112,6 +119,16 @@ class blogView(LoginRequiredMixin,View):
 def logoutView(request):
     logout(request)
     return HttpResponseRedirect(reverse('mainapp:login'))
+
+def notifs(user):
+    c=connection.cursor()
+    c.callproc('getnotification',[user,])
+    results = c.fetchall()
+    print(user,results)
+    c.close()
+    return [CommentPost.objects.get(id=x[0]) for x in results]
+
+
 
 
 def success(request):
